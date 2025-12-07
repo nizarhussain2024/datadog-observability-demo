@@ -1,0 +1,11 @@
+version: '3'
+services:
+  app:
+    build: .
+    ports:
+      - "8081:8081"
+  datadog:
+    image: gcr.io/datadoghq/agent:latest
+    environment:
+      - DD_API_KEY=replace_me
+      - DD_APM_ENABLED=true

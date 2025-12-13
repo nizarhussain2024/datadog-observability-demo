@@ -22,7 +22,15 @@ func main() {
 			"metrics":%s
 		}`, time.Now().Format(time.RFC3339), toJSON(stats))
 		
-		metrics.RecordRequest(time.Since(start), false)
+		duration := time.Since(start)
+		metrics.RecordRequest(duration, false)
+		enhancedMetrics.RecordRequest("/api/data", duration, false)
+	})
+
+	http.HandleFunc("/api/metrics/enhanced", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		stats := enhancedMetrics.GetEnhancedStats()
+		fmt.Fprintf(w, `%s`, toJSON(stats))
 	})
 
 	http.HandleFunc("/api/metrics", func(w http.ResponseWriter, r *http.Request) {

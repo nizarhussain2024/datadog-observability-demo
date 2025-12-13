@@ -42,3 +42,4 @@ func generateSpanID() string {
 	return "span-" + time.Now().Format("20060102150405")
 }
 
+
